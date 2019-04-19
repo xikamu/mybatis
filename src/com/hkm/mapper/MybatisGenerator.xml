@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hkm.mapper.CustmomerMapper">
+     <select id="findById" parameterType="int" resultType="com.hkm.po.Customer">
+       select  * from t_customer where id=#{id}
+     </select>
+      <select id="findALL"  resultType="com.hkm.po.Customer">
+          select * from t_customer
+      </select>
+    <select id="findByLikeName" parameterType="String" resultType="com.hkm.po.Customer">
+          select * from t_customer where  username like concat('%',#{keyword},'%')
+      </select>
+      <select id="findAllByLikeName" parameterType="String" resultType="com.hkm.po.Customer">
+          select * from t_customer
+          <if test="keyword !=null and keyword != ''">
+             where  username like concat('%',#{keyword} ,'%')
+          </if>
+      </select>
+
+    <select id="findAllByLikeName2" parameterType="string" resultType="com.hkm.po.Customer">
+        select * from t_customer
+        <where>
+        <choose>
+        <when test="keyword !=null and keyword !=''">
+           and username like concat('%',#{keyword},'%')
+        </when>
+        <when test="jobs != null and jobs !=''">
+            and  jobs=#{jobs}
+        </when>
+            <otherwise>
+                or id>#{id}
+            </otherwise>
+        </choose>
+        </where>
+    </select>
+</mapper>
